@@ -1,3 +1,11 @@
+export type OAuthProvider = 'google' | 'kakao' | 'github'
+
+export interface AuthSession {
+  userId: string
+  provider: OAuthProvider
+  loggedInAt: string
+}
+
 export interface User {
   id: string
   nickname: string

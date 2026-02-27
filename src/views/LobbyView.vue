@@ -3,10 +3,18 @@ import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useUserStore } from '@/stores/user'
 import { useRoomStore } from '@/stores/room'
+import { useQuestionStore } from '@/stores/question'
 
 const router = useRouter()
 const userStore = useUserStore()
 const roomStore = useRoomStore()
+const questionStore = useQuestionStore()
+
+function logout() {
+  questionStore.clear()
+  userStore.logout()
+  router.push('/login')
+}
 
 const pinInput = ref('')
 const joinError = ref('')
@@ -76,13 +84,21 @@ function joinRoom() {
         <p v-if="joinError" class="text-red-300 text-sm mt-2">{{ joinError }}</p>
       </div>
 
-      <!-- 프로필 변경 -->
-      <button
-        class="text-white/40 text-sm hover:text-white/70 transition-colors text-center"
-        @click="router.push('/')"
-      >
-        ← 프로필 변경
-      </button>
+      <!-- 하단 버튼 -->
+      <div class="flex justify-between text-sm">
+        <button
+          class="text-white/40 hover:text-white/70 transition-colors"
+          @click="router.push('/setup')"
+        >
+          ✏️ 프로필 변경
+        </button>
+        <button
+          class="text-white/40 hover:text-red-400 transition-colors"
+          @click="logout"
+        >
+          로그아웃
+        </button>
+      </div>
     </div>
   </div>
 </template>

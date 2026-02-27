@@ -20,8 +20,8 @@ function submit() {
 <template>
   <div class="min-h-screen bg-gradient-to-br from-purple-900 via-indigo-900 to-blue-900 flex items-center justify-center p-4">
     <div class="w-full max-w-md">
-      <h1 class="text-5xl font-black text-white text-center mb-2 tracking-tight">🎮 퀴즈!</h1>
-      <p class="text-white/60 text-center mb-8">팀 워크샵 퀴즈 플랫폼</p>
+      <h1 class="text-5xl font-black text-white text-center mb-2 tracking-tight">🎮 QUIZZZ!</h1>
+      <p class="text-white/60 text-center mb-8">닉네임과 캐릭터를 설정해주세요</p>
 
       <div class="bg-white/10 backdrop-blur rounded-2xl p-6 flex flex-col gap-6">
         <!-- 닉네임 -->

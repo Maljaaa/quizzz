@@ -1,23 +1,32 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
+import { useUserStore } from '@/stores/user'
 import type { Question, QuestionSet } from '@/types'
 
-const STORAGE_KEY = 'kahoot_question_sets'
+function storageKey(userId: string): string {
+  return `quizzz_questions_${userId}`
+}
 
-function load(): QuestionSet[] {
+function loadForUser(userId: string): QuestionSet[] {
   try {
-    return JSON.parse(localStorage.getItem(STORAGE_KEY) ?? '[]')
+    return JSON.parse(localStorage.getItem(storageKey(userId)) ?? '[]')
   } catch {
     return []
   }
 }
 
-function save(sets: QuestionSet[]) {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(sets))
-}
-
 export const useQuestionStore = defineStore('question', () => {
-  const questionSets = ref<QuestionSet[]>(load())
+  const userStore = useUserStore()
+  const questionSets = ref<QuestionSet[]>(userStore.id ? loadForUser(userStore.id) : [])
+
+  function reload() {
+    questionSets.value = userStore.id ? loadForUser(userStore.id) : []
+  }
+
+  function save() {
+    if (!userStore.id) return
+    localStorage.setItem(storageKey(userStore.id), JSON.stringify(questionSets.value))
+  }
 
   function createQuestionSet(title: string): QuestionSet {
     const newSet: QuestionSet = {
@@ -27,7 +36,7 @@ export const useQuestionStore = defineStore('question', () => {
       createdAt: new Date().toISOString(),
     }
     questionSets.value.push(newSet)
-    save(questionSets.value)
+    save()
     return newSet
   }
 
@@ -37,17 +46,21 @@ export const useQuestionStore = defineStore('question', () => {
     const existing = questionSets.value[index]
     if (!existing) return
     questionSets.value[index] = { id: existing.id, createdAt: existing.createdAt, title, questions }
-    save(questionSets.value)
+    save()
   }
 
   function deleteQuestionSet(id: string) {
     questionSets.value = questionSets.value.filter((s) => s.id !== id)
-    save(questionSets.value)
+    save()
   }
 
   function getQuestionSet(id: string): QuestionSet | undefined {
     return questionSets.value.find((s) => s.id === id)
   }
 
-  return { questionSets, createQuestionSet, updateQuestionSet, deleteQuestionSet, getQuestionSet }
+  function clear() {
+    questionSets.value = []
+  }
+
+  return { questionSets, reload, createQuestionSet, updateQuestionSet, deleteQuestionSet, getQuestionSet, clear }
 })
