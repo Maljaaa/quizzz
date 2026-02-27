@@ -25,6 +25,7 @@ function leaveRoom() {
   gameService.leaveRoom()
   roomStore.clearRoom()
   gameStore.reset()
+  userStore.clearProfile()
   router.push('/lobby')
 }
 </script>

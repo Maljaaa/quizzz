@@ -2,12 +2,10 @@
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useUserStore } from '@/stores/user'
-import { useRoomStore } from '@/stores/room'
 import { useQuestionStore } from '@/stores/question'
 
 const router = useRouter()
 const userStore = useUserStore()
-const roomStore = useRoomStore()
 const questionStore = useQuestionStore()
 
 function logout() {
@@ -30,11 +28,6 @@ function joinRoom() {
     joinError.value = '6자리 PIN을 입력해주세요'
     return
   }
-  const success = roomStore.joinRoom(pin)
-  if (!success) {
-    joinError.value = '방을 찾을 수 없거나 이미 시작된 방입니다'
-    return
-  }
   router.push(`/room/${pin}/waiting`)
 }
 </script>
@@ -44,8 +37,7 @@ function joinRoom() {
     <div class="w-full max-w-md flex flex-col gap-4">
       <!-- 헤더 -->
       <div class="text-center mb-2">
-        <span class="text-3xl">{{ userStore.emoji }}</span>
-        <span class="text-white font-bold ml-2">{{ userStore.nickname }}</span>
+        <h1 class="text-4xl font-black text-white tracking-tight">🎮 QUIZZZ</h1>
       </div>
 
       <!-- 방 만들기 -->
@@ -85,13 +77,7 @@ function joinRoom() {
       </div>
 
       <!-- 하단 버튼 -->
-      <div class="flex justify-between text-sm">
-        <button
-          class="text-white/40 hover:text-white/70 transition-colors"
-          @click="router.push('/setup')"
-        >
-          ✏️ 프로필 변경
-        </button>
+      <div class="flex justify-end text-sm">
         <button
           class="text-white/40 hover:text-red-400 transition-colors"
           @click="logout"

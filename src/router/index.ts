@@ -42,6 +42,11 @@ const router = createRouter({
       component: () => import('@/views/QuestionSetFormView.vue'),
     },
     {
+      path: '/room/new/waiting',
+      name: 'room-create-waiting',
+      component: () => import('@/views/RoomWaitingView.vue'),
+    },
+    {
       path: '/room/:pin/waiting',
       name: 'room-waiting',
       component: () => import('@/views/RoomWaitingView.vue'),
@@ -70,12 +75,6 @@ router.beforeEach((to) => {
 
   // 미인증 → 로그인으로
   if (!userStore.isLoggedIn) return { name: 'login' }
-
-  // 프로필 설정 페이지는 로그인만 되면 통과
-  if (to.name === 'setup') return true
-
-  // 프로필 미설정 → 설정으로
-  if (!userStore.isProfileSet) return { name: 'setup' }
 
   return true
 })

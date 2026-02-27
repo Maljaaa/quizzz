@@ -1,12 +1,10 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router'
 import { useQuestionStore } from '@/stores/question'
-import { useRoomStore } from '@/stores/room'
 import type { QuestionSet } from '@/types'
 
 const router = useRouter()
 const questionStore = useQuestionStore()
-const roomStore = useRoomStore()
 
 function createNew() {
   router.push('/questions/new')
@@ -27,8 +25,7 @@ function startRoom(set: QuestionSet) {
     alert('문제가 하나 이상 있어야 방을 만들 수 있어요')
     return
   }
-  const pin = roomStore.createRoom(set)
-  router.push(`/room/${pin}/waiting`)
+  router.push({ path: '/room/new/waiting', state: { questionSetId: set.id } })
 }
 </script>
 

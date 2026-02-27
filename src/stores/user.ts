@@ -49,11 +49,15 @@ export const useUserStore = defineStore('user', () => {
     localStorage.setItem(profileKey(id.value), JSON.stringify(newProfile))
   }
 
+  function clearProfile() {
+    profile.value = null
+  }
+
   function logout() {
     authService.logout()
     session.value = null
     profile.value = null
   }
 
-  return { id, provider, isLoggedIn, nickname, emoji, isProfileSet, user, login, setProfile, logout }
+  return { id, provider, isLoggedIn, nickname, emoji, isProfileSet, user, login, setProfile, clearProfile, logout }
 })

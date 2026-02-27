@@ -11,12 +11,7 @@ const questionStore = useQuestionStore()
 async function handleLogin(provider: OAuthProvider) {
   userStore.login(provider)
   questionStore.reload()
-
-  if (userStore.isProfileSet) {
-    router.push('/lobby')
-  } else {
-    router.push('/setup')
-  }
+  router.push('/lobby')
 }
 
 const PROVIDERS: { id: OAuthProvider; label: string; emoji: string; bg: string; text: string }[] = [
